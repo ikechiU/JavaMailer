@@ -49,8 +49,8 @@ public class EmailController {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSentDate(new Date());
-        message.setSubject("Decapay!");
-        message.setText("Welcome to decapay: kindly click this link to finish registration");
+        message.setSubject("A test subject");
+        message.setText("Hurray! you just received a mail ");
 
         try {
             LOGGER.info("Beginning of log *********");
