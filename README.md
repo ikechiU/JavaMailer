@@ -16,7 +16,7 @@
             <version>2.3.1</version>
          </dependency>
 
-3. Optional but important create a .env file in the project root folder and add it in the .gitignore file
+3. Optional but important create a .env file in the project root folder and add the details below in it. Once done, open .gitignore file and add .env (i.e. write .env)
          
          EMAIL_ADDRESS=yourgmail@gmail.com
          PASSWORD=your-password
@@ -73,7 +73,6 @@
 
 9. Follow this guide [How to Create App-Specific Passwords in Gmail](https://www.lifewire.com/get-a-password-to-access-gmail-by-pop-imap-2-1171882#:~:text=Create%20a%20Gmail%20Application%2DSpecific%20Password&text=Select%20your%20profile%20icon%20in,confirm%20your%20Gmail%20login%20credentials.)
 
-10. Check the project JavaMailApplication.java and EmailController.java    
 
 ### Reference Documentation
 1. [Guide to Spring Email](https://www.baeldung.com/spring-email)
