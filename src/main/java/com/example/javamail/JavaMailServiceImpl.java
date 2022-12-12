@@ -1,6 +1,5 @@
 package com.example.javamail;
 
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -10,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -26,35 +22,34 @@ import java.util.regex.Pattern;
 
 /**
  * @author Ikechi Ucheagwu
- * @created 10/12/2022 - 19:50
+ * @created 13/12/2022 - 00:06
  * @project JavaMail
  */
 
-@RestController
-public class EmailController {
+@Service
+public class JavaMailServiceImpl implements JavaMailService {
 
     @Autowired
     JavaMailSender javaMailSender;
     private static final Logger LOGGER = LoggerFactory.getLogger(JavaMailApplication.class);
     private static final Marker IMPORTANT = MarkerFactory.getMarker("IMPORTANT");
 
-    @PostMapping("/send/{email}")
-    public ResponseEntity<String> sendMail(@PathVariable String email) {
-
-        if (!isValidEmail(email))
+    @Override
+    public ResponseEntity<String> sendMail(String receiverEmail) {
+        if (!isValidEmail(receiverEmail))
             new ResponseEntity<>("Email is not valid", HttpStatus.BAD_REQUEST);
 
-        isEmailDomainValid(email);
+        isEmailDomainValid(receiverEmail);
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
+        message.setTo(receiverEmail);
         message.setSentDate(new Date());
         message.setSubject("A test subject");
         message.setText("Hurray! you just received a mail ");
 
         try {
             LOGGER.info("Beginning of log *********");
-            LOGGER.info(IMPORTANT, "Sending mail to: " + email);
+            LOGGER.info(IMPORTANT, "Sending mail to: " + receiverEmail);
             javaMailSender.send(message);
             return new ResponseEntity<>("Sent", HttpStatus.OK);
         } catch (Exception e) {
