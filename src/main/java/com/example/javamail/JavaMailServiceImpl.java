@@ -29,8 +29,12 @@ import java.util.regex.Pattern;
 @Service
 public class JavaMailServiceImpl implements JavaMailService {
 
+//    @Autowired
+//    JavaMailSender javaMailSender;
+
     @Autowired
-    JavaMailSender javaMailSender;
+    JavaMailConfig javaMailConfig;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JavaMailApplication.class);
     private static final Marker IMPORTANT = MarkerFactory.getMarker("IMPORTANT");
 
@@ -47,13 +51,29 @@ public class JavaMailServiceImpl implements JavaMailService {
         message.setSubject("A test subject");
         message.setText("Hurray! you just received a mail ");
 
+        JavaMailSender javaMailSender;
+        //        mailSender.setHost("smtp.gmail.com");
+//        mailSender.setHost("smtp.mail.yahoo.com");
+
         try {
+            javaMailSender = javaMailConfig.getJavaMailSender("smtp.gmail.com");
+
             LOGGER.info("Beginning of log *********");
             LOGGER.info(IMPORTANT, "Sending mail to: " + receiverEmail);
             javaMailSender.send(message);
             return new ResponseEntity<>("Sent", HttpStatus.OK);
         } catch (Exception e) {
+            javaMailSender = javaMailConfig.getJavaMailSender("smtp.mail.yahoo.com");
+            e.printStackTrace();
             LOGGER.error(IMPORTANT, e.getMessage());
+
+            try {
+                javaMailSender.send(message);
+                return new ResponseEntity<>("Sent", HttpStatus.OK);
+            } catch (Exception e2) {
+                e.printStackTrace();
+                LOGGER.error(IMPORTANT, e.getMessage());
+            }
         }
 
         return new ResponseEntity<>("An Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);

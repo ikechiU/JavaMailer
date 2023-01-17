@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
@@ -14,16 +15,19 @@ import java.util.Properties;
  * @project JavaMail
  */
 
-@Configuration
+//@Configuration
+    @Component
 public class JavaMailConfig {
-    @Bean
-    public JavaMailSender getJavaMailSender() {
+//    @Bean
+    public JavaMailSender getJavaMailSender(String host) {
         Dotenv dotenv = Dotenv.load();
         String email = dotenv.get("EMAIL_ADDRESS");
         String password = dotenv.get("PASSWORD");
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
+//        mailSender.setHost("smtp.gmail.com");
+//        mailSender.setHost("smtp.mail.yahoo.com");
+        mailSender.setHost(host);
         mailSender.setPort(587);
         mailSender.setUsername(email);
         mailSender.setPassword(password);
